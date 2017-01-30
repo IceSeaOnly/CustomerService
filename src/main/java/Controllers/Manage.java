@@ -134,7 +134,11 @@ public class Manage {
             Conversation c = commonService.getConversationById(u.getId(),cid);
             if(c != null){
                 if(type == 1 || type == 0){
-                    commonService.save(new Message(cid,type,word));
+                    try {
+                        commonService.save(new Message(cid,type, URLDecoder.decode(word,"UTF-8")));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }else
                     return FailAnswer.answer("type参数仅能为0或1");
             }else{

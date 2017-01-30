@@ -22,7 +22,7 @@
     <h1 style="color:red">api说明</h1>
     <img style="width: 1159px;height: 439px" src="http://image.binghai.site/data/f_54597662.png">
     <img style="width: 1163px;height: 376px" src="http://image.binghai.site/data/f_10486066.png">
-    <img style="width: 1164px;height: 113px" src="http://image.binghai.site/data/f_33170789.png">
+    <img style="width: 1163px;height: 132px" src="http://image.binghai.site/data/f_88915453.png">
     <h1 style="color:red">系统回调说明</h1>
     <img style="width: 430px;height: 240px" src="http://image.binghai.site/data/f_75538496.png">
     <h1 style="color:red">客服端链接拼接方法</h1>
