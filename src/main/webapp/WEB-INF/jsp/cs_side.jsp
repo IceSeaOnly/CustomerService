@@ -34,6 +34,7 @@
                     {
                         cid:${cid},
                         uid:${uid},
+                        token:'${token}',
                         ckey:'${ckey}',
                         msg: t_msg
                     },
@@ -52,7 +53,7 @@
             }
         }
         function getMsgList() {
-            $.getJSON("/ajax/getMsg.do?cid=${cid}&uid=${uid}&ckey=${ckey}", function (data) {
+            $.getJSON("/ajax/getMsg.do?cid=${cid}&uid=${uid}&ckey=${ckey}&token=${token}", function (data) {
                 console.log(data);
                 if (data.result == false) {
                     if(data.reason == "endingservice"){
@@ -171,6 +172,7 @@
         <input name="uid" value="${uid}" type="hidden"/>
         <input name="cid" value="${cid}" type="hidden"/>
         <input name="ckey" value="${ckey}" type="hidden"/>
+        <input name="token" value="${token}" type="hidden"/>
         <div class="content-block">
             <div class="list-block">
                 <ul>

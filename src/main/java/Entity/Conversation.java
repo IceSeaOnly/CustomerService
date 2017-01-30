@@ -30,8 +30,11 @@ public class Conversation {
     private Long rendTime;
     private int score;
     private String endText;
+    private String userToken;
+    private String serverToken;
+    private String callBcakToken;
 
-    public Conversation(String skey, String callBackUrl, int status, Long lid, Long managerId, Long createTime) {
+    public Conversation(String skey, String callBackUrl, int status, Long lid, Long managerId, Long createTime,String ut,String st,String cbt) {
         this.skey = skey;
         this.callBackUrl = callBackUrl;
         this.status = status;
@@ -43,6 +46,9 @@ public class Conversation {
         this.rendTime = null;
         this.score = -1;
         this.endText = null;
+        this.userToken = ut;
+        this.serverToken = st;
+        this.callBackUrl = cbt;
     }
 
     public Conversation() {
@@ -142,5 +148,29 @@ public class Conversation {
 
     public void setEndText(String endText) {
         this.endText = endText;
+    }
+
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
+    }
+
+    public String getServerToken() {
+        return serverToken;
+    }
+
+    public void setServerToken(String serverToken) {
+        this.serverToken = serverToken;
+    }
+
+    public String getCallBcakToken() {
+        return callBcakToken;
+    }
+
+    public void setCallBcakToken(String callBcakToken) {
+        this.callBcakToken = callBcakToken;
     }
 }

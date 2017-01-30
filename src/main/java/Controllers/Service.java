@@ -26,6 +26,7 @@ public class Service {
             @RequestParam String ckey,
             @RequestParam Long cid,
             @RequestParam Long uid,
+            @RequestParam String token,
             ModelMap map
             ){
         Conversation c = commonService.getConversationByKeyId(cid,ckey);
@@ -33,21 +34,22 @@ public class Service {
         map.put("ckey",ckey);
         map.put("cid",cid);
         map.put("uid",uid);
+        map.put("token",token);
+
         if(c == null){
             map.put("err","invalid parameters");
             return "error_page";
         }else{
             map.put("conversation",c);
-            if(c.getLid().equals(uid)){
+            if(c.getLid().equals(uid) & c.getUserToken().equals(token)){
                 map.put("msgs",commonService.listAllMsg(cid));
                 return "customer_side";
-            }else{
-                if(c.getRid() == null){
-                    map.put("err","invalid parameters");
-                    return "error_page";
-                }
+            }else if(c.getRid() == null && c.getServerToken().equals(token)){
                 map.put("msgs",commonService.listAllMsg(cid));
                 return "cs_side";
+            }else{
+                map.put("err","invalid parameters");
+                return "error_page";
             }
         }
     }
@@ -58,6 +60,7 @@ public class Service {
             @RequestParam Long cid,
             @RequestParam Long uid,
             @RequestParam String endText,
+            @RequestParam String token,
             ModelMap map
     ){
         Conversation c = commonService.getConversationByKeyId(cid,ckey);
@@ -65,12 +68,12 @@ public class Service {
             map.put("err","invalid parameters");
             return "error_page";
         }
-        if(c.getRid().equals(uid)){
+        if(c.getRid().equals(uid) && c.getServerToken().equals(token)){
             c.setStatus(c.getStatus() == Conversation.ENDINGSERVICE?Conversation.SERVICEENDED:Conversation.ENDINGSERVICE);
             c.setRendTime(System.currentTimeMillis());
             c.setEndText(endText);
             commonService.update(c);
-            makeCallBack(c.getCallBackUrl(),"notice=serverEnd&cid="+cid);
+            makeCallBack(c.getCallBackUrl(),"cbt="+c.getCallBcakToken()+"notice=serverEnd&cid="+cid);
         }else{
             map.put("err","invalid parameters");
             return "error_page";
@@ -81,6 +84,7 @@ public class Service {
     @RequestMapping(value = "lend",method = RequestMethod.GET)
     public String LeftEndService(
             @RequestParam String ckey,
+            @RequestParam String token,
             @RequestParam Long cid,
             @RequestParam Long uid,
             @RequestParam int score,
@@ -91,12 +95,12 @@ public class Service {
             map.put("err","invalid parameters");
             return "error_page";
         }
-        if(c.getLid().equals(uid)){
+        if(c.getLid().equals(uid) && c.getUserToken().equals(token)){
             c.setStatus(c.getStatus() == Conversation.ENDINGSERVICE?Conversation.SERVICEENDED:Conversation.ENDINGSERVICE);
             c.setLendTime(System.currentTimeMillis());
             c.setScore(score);
             commonService.update(c);
-            makeCallBack(c.getCallBackUrl(),"notice=userEnd&cid="+cid);
+            makeCallBack(c.getCallBackUrl(),"cbt="+c.getCallBcakToken()+"notice=userEnd&cid="+cid);
         }else{
             map.put("err","invalid parameters");
             return "error_page";

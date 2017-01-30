@@ -33,6 +33,7 @@ public class Manage {
     public String newChat(@RequestParam String appKey,
                           @RequestParam String secret,
                           @RequestParam String encodeUrl,
+                          @RequestParam String cbt,
                           @RequestParam Long lid
                           ){
         User u = commonService.getUserByappKeySecret(appKey,secret);
@@ -47,12 +48,17 @@ public class Manage {
                 e.printStackTrace();
                 return FailAnswer.answer("can not decode the url,please encode as UTF-8.");
             }
-            Conversation c = new Conversation(key,url,Conversation.WAITSERVICE,lid,u.getId(),System.currentTimeMillis());
+            String ut = MD5.encryption(System.currentTimeMillis()+"utoken");
+            String st = MD5.encryption(System.currentTimeMillis()+"stoken");
+            Conversation c = new Conversation(key,url,Conversation.WAITSERVICE,lid,u.getId(),System.currentTimeMillis(),ut,st,cbt);
             c = (Conversation) commonService.merge(c);
             JSONObject succ = SuccessAnswer.blankAnswer();
             succ.put("cid",c.getId());
             succ.put("ckey",c.getSkey());
             succ.put("lid",c.getLid());
+            succ.put("utoken",ut);
+            succ.put("stoken",st);
+            succ.put("cbt",cbt);
             return succ.toJSONString();
         }
     }

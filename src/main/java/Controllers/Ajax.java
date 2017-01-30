@@ -29,6 +29,7 @@ public class Ajax {
     public String getMsg(
             @RequestParam Long cid,
             @RequestParam Long uid,
+            @RequestParam String token,
             @RequestParam String ckey
             ){
         Conversation c = commonService.getConversationByKeyId(cid,ckey);
@@ -40,13 +41,13 @@ public class Ajax {
         if(c.getStatus() == Conversation.SERVICEENDED)
             return FailAnswer.answer("serviceended");
 
-        if(c.getLid().equals(uid)){
+        if(c.getLid().equals(uid) && c.getUserToken().equals(token)){
             ArrayList<Message>msgs = commonService.listAllMsg(cid);
             JSONObject data = SuccessAnswer.blankAnswer();
             data.put("msgs",msgs);
             return data.toJSONString();
         }else{
-            if(c.getRid() != null && c.getRid().equals(uid)){
+            if(c.getRid() != null && c.getRid().equals(uid) && c.getServerToken().equals(token)){
                 ArrayList<Message>msgs = commonService.listAllMsg(cid);
                 JSONObject data = SuccessAnswer.blankAnswer();
                 data.put("msgs",msgs);
@@ -62,19 +63,20 @@ public class Ajax {
     public String submit_msg(@RequestParam String ckey,
                              @RequestParam Long cid,
                              @RequestParam Long uid,
+                             @RequestParam String token,
                              @RequestParam String msg){
         Conversation c = commonService.getConversationByKeyId(cid,ckey);
         if(c == null)
             return "非法参数";
         if(c.getStatus()>Conversation.INSERVICE)
             return "本次服务已结束，发送失败";
-        if(c.getLid().equals(uid)){
+        if(c.getLid().equals(uid) && c.getUserToken().equals(token)){
             commonService.save(new Message(cid,0,msg));
-            makeCallBack(c.getCallBackUrl(),cid,"user");
+            makeCallBack(c.getCallBackUrl(),cid,"user",c.getCallBcakToken());
             return "true";
-        }else if(c.getRid().equals(uid)){
+        }else if(c.getRid().equals(uid) && c.getServerToken().equals(token)){
             commonService.save(new Message(cid,1,msg));
-            makeCallBack(c.getCallBackUrl(),cid,"server");
+            makeCallBack(c.getCallBackUrl(),cid,"server",c.getCallBcakToken());
             return "true";
         }else{
             return "非法参数";
@@ -82,7 +84,7 @@ public class Ajax {
 
     }
 
-    private void makeCallBack(String url, Long cid, String t){
-        new Thread(new CallBackReqeust(url,"notice=newMsg&cid="+cid+"&type="+t)).start();
+    private void makeCallBack(String url, Long cid, String t,String cbt){
+        new Thread(new CallBackReqeust(url,"cbt="+cbt+"&notice=newMsg&cid="+cid+"&type="+t)).start();
     }
 }

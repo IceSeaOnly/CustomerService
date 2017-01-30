@@ -27,32 +27,32 @@
                     bold: true,
                     color: 'danger',
                     onClick: function () {
-                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=4";
+                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=4&token=${token}};
                     }
                 }, {
                     text: '还阔以★★★☆',
                     bold: true,
                     color: 'danger',
                     onClick: function () {
-                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=3";
+                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=3&token=${token}";
                     }
                 }, {
                     text: '一般般★★☆☆',
                     bold: true,
                     onClick: function () {
-                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=2";
+                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=2&token=${token}";
                     }
                 }, {
                     text: '辣鸡★☆☆☆',
                     bold: true,
                     onClick: function () {
-                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=1";
+                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=1&token=${token}";
                     }
                 }, {
                     text: 'WTF☆☆☆☆',
                     bold: true,
                     onClick: function () {
-                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=0";
+                        window.location = "/service/lend.do?cid=${cid}&uid=${uid}&ckey=${ckey}&score=0&token=${token}";
                     }
                 }
             ];
@@ -83,6 +83,7 @@
                         cid:${cid},
                         uid:${uid},
                         ckey:'${ckey}',
+                        token:'${token}',
                         msg: t_msg
                     },
                     function (data, status) {
@@ -101,7 +102,7 @@
         }
 
         function getMsgList() {
-            $.getJSON("/ajax/getMsg.do?cid=${cid}&uid=${uid}&ckey=${ckey}", function (data) {
+            $.getJSON("/ajax/getMsg.do?cid=${cid}&uid=${uid}&ckey=${ckey}&token=${token}", function (data) {
                 console.log(data);
                 if (data.result == false) {
                     if(data.reason == "endingservice"){
