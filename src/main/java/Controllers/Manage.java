@@ -1,6 +1,7 @@
 package Controllers;
 
 import Entity.Conversation;
+import Entity.Message;
 import Entity.User;
 import Utils.FailAnswer;
 import Utils.MD5;
@@ -110,6 +111,31 @@ public class Manage {
             Conversation c = commonService.getConversationById(u.getId(),cid);
             JSONObject data = SuccessAnswer.blankAnswer();
             data.put("conversation",c);
+            return data.toJSONString();
+        }
+    }
+
+    /**
+     * 以客服的身份加入信息到会话中
+     * */
+    @RequestMapping("add_msg")
+    @ResponseBody
+    public String add_msg(@RequestParam String appKey,
+                          @RequestParam String secret,
+                          @RequestParam Long cid,
+                          @RequestParam String word
+                          ){
+        User u = commonService.getUserByappKeySecret(appKey,secret);
+        if(u == null){
+            return FailAnswer.answer("认证失败");
+        }else{
+            Conversation c = commonService.getConversationById(u.getId(),cid);
+            if(c != null){
+                commonService.save(new Message(cid,1,word));
+            }else{
+                return FailAnswer.answer("会话归属错误");
+            }
+            JSONObject data = SuccessAnswer.blankAnswer();
             return data.toJSONString();
         }
     }
