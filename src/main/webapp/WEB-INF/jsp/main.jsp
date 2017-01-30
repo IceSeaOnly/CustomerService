@@ -21,7 +21,8 @@
     <span style="color:green">请求根路径:http://cservice.nanayun.cn/manage/</span><p>
     <h1 style="color:red">api说明</h1>
     <img style="width: 1159px;height: 439px" src="http://image.binghai.site/data/f_54597662.png">
-    <img style="width: 1163px;height: 450px" src="http://image.binghai.site/data/f_35178543.png">
+    <img style="width: 1163px;height: 376px" src="http://image.binghai.site/data/f_10486066.png">
+    <img style="width: 1164px;height: 113px" src="http://image.binghai.site/data/f_33170789.png">
     <h1 style="color:red">系统回调说明</h1>
     <img style="width: 430px;height: 240px" src="http://image.binghai.site/data/f_75538496.png">
     <h1 style="color:red">客服端链接拼接方法</h1>
