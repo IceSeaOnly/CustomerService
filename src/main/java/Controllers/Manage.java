@@ -116,22 +116,27 @@ public class Manage {
     }
 
     /**
-     * 以客服的身份加入信息到会话中
+     * 加入信息到会话中 v2.0
+     * type = 0,以用户身份
+     * type = 1,以客服身份
      * */
     @RequestMapping("add_msg")
     @ResponseBody
     public String add_msg(@RequestParam String appKey,
                           @RequestParam String secret,
                           @RequestParam Long cid,
-                          @RequestParam String word
-                          ){
+                          @RequestParam String word,
+                          @RequestParam int type){
         User u = commonService.getUserByappKeySecret(appKey,secret);
         if(u == null){
             return FailAnswer.answer("认证失败");
         }else{
             Conversation c = commonService.getConversationById(u.getId(),cid);
             if(c != null){
-                commonService.save(new Message(cid,1,word));
+                if(type == 1 || type == 0){
+                    commonService.save(new Message(cid,type,word));
+                }else
+                    return FailAnswer.answer("type参数仅能为0或1");
             }else{
                 return FailAnswer.answer("会话归属错误");
             }
